@@ -12,5 +12,7 @@
 
 注：项目启动时会创建资源表(Resource.txt)，用户表(User.txt)，用户资源关系映射表(UserResource.txt)，并初始化表数据。
 其中资源表ID取值范围1~7
-用户表ID=1为admin角色，用户表ID=2为user(普通用户)角色
+用户表ID=1为管理员角色，用户表ID=2为普通用户角色
+
+
 测试用例具体见RoleControlApplicationTests

@@ -27,10 +27,10 @@ public class RoleController {
     private RoleControlValidator validator;
 
     @Resource
-    private UserMapper userMapper;
-
-    @Resource
     private UserResourceMapper userResourceMapper;
+
+
+    public
 
     /**
      * 给用户做资源授权

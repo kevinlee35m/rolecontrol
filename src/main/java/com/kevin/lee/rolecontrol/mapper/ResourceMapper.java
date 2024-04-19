@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -40,7 +41,7 @@ public class ResourceMapper {
 
         //读取文件并转换为对象列表
         List<ResourcePO> objects = new ArrayList<>();
-        try (BufferedReader reader = Files.newBufferedReader(sourcePath)) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(FileUtil.RESOURCE_FILE_PATH))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 objects.add(GsonUtil.fromJson(line, ResourcePO.class));

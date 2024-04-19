@@ -9,7 +9,7 @@ public enum RoleEnum {
 
     ADMIN(1, "管理者"),
 
-    USER(2, "普通用户");
+    COMMON(2, "普通用户");
 
 
     RoleEnum(int role, String desc) {

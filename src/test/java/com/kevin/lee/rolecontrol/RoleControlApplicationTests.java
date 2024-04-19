@@ -26,7 +26,7 @@ class RoleControlApplicationTests {
 
     /**
      * 测试方法：/user/resource/{id}
-     * case1：请求资源无效(有效资源1~7)
+     * case1：请求无效资源(有效资源1~7)
      *
      * @throws Exception
      */
@@ -39,7 +39,7 @@ class RoleControlApplicationTests {
 
     /**
      * 测试方法：/user/resource/{id}
-     * case2：资源不属于自己(userId=1只拥有资源1，不拥有资源2)
+     * case2：请求资源不属于自己(userId=1只拥有资源1，不拥有资源2)
      *
      * @throws Exception
      */
@@ -52,7 +52,7 @@ class RoleControlApplicationTests {
 
     /**
      * 测试方法：/user/resource/{id}
-     * case3：资源属于自己(userId=1只拥有资源1)
+     * case3：请求资源属于自己(userId=1只拥有资源1)
      *
      * @throws Exception
      */
@@ -71,7 +71,7 @@ class RoleControlApplicationTests {
 
     /**
      * 测试方法：/admin/addUser
-     * case1：body参数缺失，如userId缺失，或者资源id缺失
+     * case4：body参数缺失，如userId缺失，或者资源id缺失
      *
      * @throws Exception
      */
@@ -86,7 +86,7 @@ class RoleControlApplicationTests {
 
     /**
      * 测试方法：/admin/addUser
-     * case2：登录用户无权限授权，userId=2为普通用户，无权授权
+     * case5：登录用户无权限授权，userId=2为普通用户，无权授权
      *
      * @throws Exception
      */
@@ -116,12 +116,12 @@ class RoleControlApplicationTests {
 
     /**
      * 测试方法：/admin/addUser
-     * case4：资源无效(有效资源仅为1~7)
+     * case4：授权的资源为无效资源(有效资源仅为1~7)
      *
      * @throws Exception
      */
     @Test
-    public void test_addUser_resourceInvalid() throws Exception {
+    public void test_addUser_invalidResource() throws Exception {
         mockMvc.perform(post("/admin/addUser").header(Constant.HEADER_PARAM, "{\"userId\":1,\"accountName\":\"lee\",\"role\":1}")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"userId\":2,\"resourceIds\":[8]}"))

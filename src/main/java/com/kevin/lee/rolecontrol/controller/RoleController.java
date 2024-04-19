@@ -36,7 +36,7 @@ public class RoleController {
     private ResourceMapper resourceMapper;
 
     /**
-     * 给用户做资源授权
+     * 登录用户给指定用户做资源授权
      *
      * @return
      */

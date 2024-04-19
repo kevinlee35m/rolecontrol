@@ -50,7 +50,7 @@ public class UserResourceMapper {
                 objects.add(GsonUtil.fromJson(line, UserResourcePO.class));
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("read file " + FileUtil.USER_RESOURCE_FILE_PATH + " fail, cause: " + e);
         }
 
         return objects;
@@ -69,7 +69,7 @@ public class UserResourceMapper {
                 writer.newLine();
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("write file " + FileUtil.USER_RESOURCE_FILE_PATH + " fail, cause: " + e);
             return false;
         }
 

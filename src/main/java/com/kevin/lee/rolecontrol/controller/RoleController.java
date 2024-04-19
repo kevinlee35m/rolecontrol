@@ -1,6 +1,6 @@
 package com.kevin.lee.rolecontrol.controller;
 
-import com.kevin.lee.rolecontrol.mapper.UserMapper;
+import com.kevin.lee.rolecontrol.mapper.ResourceMapper;
 import com.kevin.lee.rolecontrol.mapper.UserResourceMapper;
 import com.kevin.lee.rolecontrol.repository.po.UserResourcePO;
 import com.kevin.lee.rolecontrol.util.GsonUtil;
@@ -29,8 +29,8 @@ public class RoleController {
     @Resource
     private UserResourceMapper userResourceMapper;
 
-
-    public
+    @Resource
+    private ResourceMapper resourceMapper;
 
     /**
      * 给用户做资源授权
@@ -38,11 +38,11 @@ public class RoleController {
      * @return
      */
     @PostMapping(value = "/admin/addUser")
-    public String addUser(@RequestBody UserAddVO userAddVO, @RequestHeader("Logged-in User") String strLoginUser) {
+    public String addUser(@RequestBody UserAddVO userAddVO, @RequestHeader("Logged-inUser") String strLoginUser) {
         //请求解析
         UserVO loginUser = GsonUtil.fromJson(strLoginUser, UserVO.class);
         if (loginUser == null) {
-            return "请先登录";
+            return "please login first";
         }
 
         //参数校验
@@ -52,19 +52,33 @@ public class RoleController {
         }
 
         //数据插入
-        List<Long> existResourceIds = userResourceMapper.queryUserResourceIds(userAddVO.getUserId());
-        List<Long> filteredResourceIds = userAddVO.getResourceIds().stream().filter(new Predicate<Long>() {
+        //1.过滤用户已有资源
+        List<Long> existUserResourceIds = userResourceMapper.queryUserResourceIds(userAddVO.getUserId());
+        List<Long> fResourceIds = userAddVO.getResourceIds().stream().filter(new Predicate<Long>() {
             @Override
             public boolean test(Long aLong) {
-                return existResourceIds.contains(aLong);
+                return existUserResourceIds.contains(aLong);
+            }
+        }).collect(Collectors.toList());
+        if (fResourceIds.size() == 0) {
+            return "grant success";
+        }
+
+        //2.过滤无效资源
+        List<Long> allResourceIds = resourceMapper.queryAllResourceId();
+        List<Long> filteredResourceIds = fResourceIds.stream().filter(new Predicate<Long>() {
+            @Override
+            public boolean test(Long aLong) {
+                return allResourceIds.contains(aLong);
             }
         }).collect(Collectors.toList());
         if (filteredResourceIds.size() == 0) {
-            return "已添加";
+            return "resource is invalid";
         }
+
         List<UserResourcePO> userResourcePOs = filteredResourceIds.stream().map(id -> UserResourcePO.builder().userId(userAddVO.getUserId()).resourceId(id).build()).collect(Collectors.toList());
         boolean success = userResourceMapper.batchAdd(userResourcePOs);
-        return success ? "授权成功" : "发生异常，请重試";
+        return success ? "grant success" : "occur error, please try again";
     }
 
     /**
@@ -73,18 +87,22 @@ public class RoleController {
      * @return
      */
     @GetMapping(value = "/user/resource/{id}")
-    public String getResource(@PathVariable("id") Long id, @RequestHeader("Logged-in User") String strLoginUser) {
+    public String getResource(@PathVariable("id") Long id, @RequestHeader("Logged-inUser") String strLoginUser) {
         //请求解析
         UserVO loginUser = GsonUtil.fromJson(strLoginUser, UserVO.class);
         if (loginUser == null) {
-            return "请先登录";
+            return "please login first";
         }
 
         //参数校验
-        validator.validateGetResource(loginUser, id);
+        String validateMsg = validator.validateGetResource(loginUser, id);
+        if (!StringUtils.isEmpty(validateMsg)) {
+            return validateMsg;
+        }
 
-
-        return "hello springboot!";
+        //查询登录用户是否有访问权限
+        List<Long> resourceIds = userResourceMapper.queryUserResourceIds(loginUser.getUserId());
+        return resourceIds.contains(id) ? "login user has access" : "login user has no access";
     }
 
 }

@@ -1,8 +1,9 @@
 package com.kevin.lee.rolecontrol.validator;
 
 import com.kevin.lee.rolecontrol.RoleEnum;
+import com.kevin.lee.rolecontrol.mapper.ResourceMapper;
 import com.kevin.lee.rolecontrol.mapper.UserMapper;
-import com.kevin.lee.rolecontrol.mapper.UserResourceMapper;
+import com.kevin.lee.rolecontrol.repository.po.ResourcePO;
 import com.kevin.lee.rolecontrol.repository.po.UserPO;
 import com.kevin.lee.rolecontrol.vo.UserAddVO;
 import com.kevin.lee.rolecontrol.vo.UserVO;
@@ -23,26 +24,26 @@ public class RoleControlValidator {
     private UserMapper userMapper;
 
     @Resource
-    private UserResourceMapper userResourceMapper;
+    private ResourceMapper resourceMapper;
 
 
     public String validateAddUser(UserVO loginUser, UserAddVO userAddVO) {
         if (loginUser.getUserId() == null || loginUser.getUserId() <= 0) {
-            return "登录账户请求参数异常";
+            return "login user param is wrong";
         }
 
         if (userAddVO == null || userAddVO.getUserId() == null || userAddVO.getUserId() <= 0 || CollectionUtils.isEmpty(userAddVO.getResourceIds())) {
-            return "请求参数异常";
+            return "param is wrong";
         }
 
         UserPO loginUserPo = userMapper.getUser(loginUser.getUserId());
         if (loginUserPo.getRole() != RoleEnum.ADMIN.role) {
-            return "登录账户无添加用户权限";
+            return "login user has no right to grant";
         }
 
         UserPO addUserPo = userMapper.getUser(userAddVO.getUserId());
         if (addUserPo == null) {
-            return "请先注册授权用户";
+            return "unknown granting user";
         }
 
         return "";
@@ -50,17 +51,16 @@ public class RoleControlValidator {
 
     public String validateGetResource(UserVO loginUser, Long resourceId) {
         if (loginUser.getUserId() == null || loginUser.getUserId() <= 0) {
-            return "登录账户请求参数异常";
+            return "login user param is wrong";
         }
 
         //参数校验
         if (resourceId == null || resourceId <= 0) {
-            return "请求参数异常";
+            return "param is wrong";
         }
 
-
-
-        return "";
+        ResourcePO resourcePO = resourceMapper.getResource(resourceId);
+        return resourcePO != null ? "" : "resourceDesc is not exist";
     }
 
 }

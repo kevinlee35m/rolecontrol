@@ -6,11 +6,8 @@ import com.kevin.lee.rolecontrol.util.GsonUtil;
 import org.springframework.stereotype.Repository;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -24,20 +21,31 @@ import java.util.stream.Collectors;
 @Repository
 public class ResourceMapper {
 
-    public boolean addResource(ResourcePO resourcePO) {
-        List<ResourcePO> list = new ArrayList<>();
-        return addResources(list);
-    }
-
+    /**
+     * 根据资源ID查询资源信息
+     *
+     * @param resourceId
+     * @return
+     */
     public ResourcePO getResource(long resourceId) {
         List<ResourcePO> resourcePOs = getAllResource();
-        Map<Long, ResourcePO> resourcePOMap = resourcePOs.stream().collect(Collectors.toMap(ResourcePO::getResourceId, user -> user));
+        Map<Long, ResourcePO> resourcePOMap = resourcePOs.stream().collect(Collectors.toMap(ResourcePO::getResourceId, re -> re));
         return resourcePOMap.get(resourceId);
     }
 
+    /**
+     * 查询所有资源ID
+     *
+     * @return
+     */
+    public List<Long> queryAllResourceId() {
+        List<ResourcePO> resourcePOs = getAllResource();
+        return resourcePOs.stream().map(resourcePO -> resourcePO.getResourceId()).collect(Collectors.toList());
+    }
+
     private List<ResourcePO> getAllResource() {
-        //检查文件是否存在
-        Path sourcePath = FileUtil.newFile(FileUtil.RESOURCE_FILE_PATH, FileUtil.DEFAULT_RESOURCES);
+        //确保文件存在
+        FileUtil.newFile(FileUtil.RESOURCE_FILE_PATH, FileUtil.DEFAULT_RESOURCES);
 
         //读取文件并转换为对象列表
         List<ResourcePO> objects = new ArrayList<>();
@@ -47,29 +55,9 @@ public class ResourceMapper {
                 objects.add(GsonUtil.fromJson(line, ResourcePO.class));
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("read file " + FileUtil.RESOURCE_FILE_PATH + " fail, cause: " + e);
         }
 
         return objects;
-    }
-
-
-    private boolean addResources(List<ResourcePO> list) {
-        //检查文件是否存在
-        Path sourcePath = FileUtil.newFile(FileUtil.RESOURCE_FILE_PATH, FileUtil.DEFAULT_RESOURCES);
-
-        //将对象列表写入到目标文件
-        try {
-            BufferedWriter writer = Files.newBufferedWriter(sourcePath);
-            for (ResourcePO obj : list) {
-                writer.write(GsonUtil.toJson(obj));
-                writer.newLine();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-            return false;
-        }
-
-        return true;
     }
 }

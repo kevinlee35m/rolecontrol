@@ -16,6 +16,6 @@ public class ResourcePO {
 
     private long resourceId;
 
-    private String resource;
+    private String resourceDesc;
 
 }

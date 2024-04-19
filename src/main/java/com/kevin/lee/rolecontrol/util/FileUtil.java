@@ -21,34 +21,51 @@ import java.util.List;
  */
 public class FileUtil {
 
+    /**
+     * 数据表
+     */
     public static final String USER_FILE_PATH = "file/user.txt";
-
-    public static final String USER_RESOURCE_FILE_PATH = "file/userresource.txt";
 
     public static final String RESOURCE_FILE_PATH = "file/resource.txt";
 
+    public static final String USER_RESOURCE_FILE_PATH = "file/userresource.txt";
+
+    //用户表初始化数据
     public static final List<String> DEFAULT_USERS = Lists.newArrayList(
             GsonUtil.toJson(UserPO.builder().userId(1).userName("lee").role(RoleEnum.ADMIN.role).build()),
             GsonUtil.toJson(UserPO.builder().userId(2).userName("lee2").role(RoleEnum.USER.role).build()));
 
+    //资源表初始化数据
     public static final List<String> DEFAULT_RESOURCES = Lists.newArrayList(
-            GsonUtil.toJson(ResourcePO.builder().resourceId(1).resource("resource1").build()),
-            GsonUtil.toJson(ResourcePO.builder().resourceId(2).resource("resource2").build()),
-            GsonUtil.toJson(ResourcePO.builder().resourceId(3).resource("resource3").build()));
+            GsonUtil.toJson(ResourcePO.builder().resourceId(1).resourceDesc("resource1").build()),
+            GsonUtil.toJson(ResourcePO.builder().resourceId(2).resourceDesc("resource2").build()),
+            GsonUtil.toJson(ResourcePO.builder().resourceId(3).resourceDesc("resource3").build()),
+            GsonUtil.toJson(ResourcePO.builder().resourceId(4).resourceDesc("resource3").build()),
+            GsonUtil.toJson(ResourcePO.builder().resourceId(5).resourceDesc("resource3").build()),
+            GsonUtil.toJson(ResourcePO.builder().resourceId(6).resourceDesc("resource3").build()),
+            GsonUtil.toJson(ResourcePO.builder().resourceId(7).resourceDesc("resource3").build()));
 
+    //用户资源映射表初始化数据
     public static final List<String> DEFAULT_USER_RESOURCES = Lists.newArrayList(
             GsonUtil.toJson(UserResourcePO.builder().userId(1).resourceId(1).build())
     );
 
-
+    /**
+     * 项目启动时初始化表数据
+     */
     public static void initFile() {
         newFile(USER_FILE_PATH, DEFAULT_USERS);
 
-        newFile(USER_RESOURCE_FILE_PATH, DEFAULT_RESOURCES);
+        newFile(USER_RESOURCE_FILE_PATH, DEFAULT_USER_RESOURCES);
 
-        newFile(RESOURCE_FILE_PATH, DEFAULT_USER_RESOURCES);
+        newFile(RESOURCE_FILE_PATH, DEFAULT_RESOURCES);
     }
 
+    /**
+     * @param strFilePath
+     * @param strs
+     * @return
+     */
     public static Path newFile(String strFilePath, List<String> strs) {
         Path filePath = Paths.get(strFilePath);
         if (!Files.exists(filePath)) {
@@ -57,6 +74,7 @@ public class FileUtil {
                 Files.createFile(filePath);
             } catch (IOException e) {
                 System.out.println("create file " + strFilePath + " fail, cause: " + e);
+                return null;
             }
 
             try (BufferedWriter writer = Files.newBufferedWriter(filePath, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING)) {
@@ -64,10 +82,9 @@ public class FileUtil {
                     writer.write(str);
                     writer.newLine();
                 }
-
             } catch (IOException e) {
-                e.printStackTrace();
-                // 处理文件读写异常
+                System.out.println("fill file " + strFilePath + " data fail, cause: " + e);
+                return null;
             }
         }
         return filePath;

@@ -2,6 +2,7 @@ package com.kevin.lee.rolecontrol.vo;
 
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -10,7 +11,7 @@ import java.util.List;
  * @date 4/19/24 12:03 PM
  */
 @Data
-public class UserAddVO {
+public class UserAddVO implements Serializable {
 
     private Long userId;
 

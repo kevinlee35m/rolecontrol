@@ -1,5 +1,6 @@
 package com.kevin.lee.rolecontrol.util;
 
+import com.google.common.collect.Lists;
 import com.kevin.lee.rolecontrol.RoleEnum;
 import com.kevin.lee.rolecontrol.repository.po.ResourcePO;
 import com.kevin.lee.rolecontrol.repository.po.UserPO;
@@ -11,7 +12,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
-import com.google.common.collect.Lists;
 
 /**
  * @author kevinlee_m
@@ -26,22 +26,26 @@ public class FileUtil {
 
     public static final String RESOURCE_FILE_PATH = "/resource.txt";
 
-    public static final List<UserPO> DEFAULT_USERS =
+    public static final List<String> DEFAULT_USERS = Lists.newArrayList(
+            GsonUtil.toJson(UserPO.builder().userId(1).userName("lee").role(RoleEnum.ADMIN.role).build()),
+            GsonUtil.toJson(UserPO.builder().userId(2).userName("lee2").role(RoleEnum.USER.role).build()));
 
-    public static final UserPO USER_PO = UserPO.builder().userId(1).userName("lee").role(RoleEnum.ADMIN.role).build();
-    public static final UserPO USER_PO2 = UserPO.builder().userId(2).userName("lee2").role(RoleEnum.USER.role).build();
-    public static final ResourcePO RESOURCE_PO = ResourcePO.builder().resourceId(1).resource("resource1").build();
-    public static final ResourcePO RESOURCE_PO2 = ResourcePO.builder().resourceId(2).resource("resource2").build();
-    public static final ResourcePO RESOURCE_PO3 = ResourcePO.builder().resourceId(3).resource("resource3").build();
-    public static final UserResourcePO USER_RESOURCE_PO = UserResourcePO.builder().userId(1).resourceId(1).build();
+    public static final List<String> DEFAULT_RESOURCES = Lists.newArrayList(
+            GsonUtil.toJson(ResourcePO.builder().resourceId(1).resource("resource1").build()),
+            GsonUtil.toJson(ResourcePO.builder().resourceId(2).resource("resource2").build()),
+            GsonUtil.toJson(ResourcePO.builder().resourceId(3).resource("resource3").build()));
+
+    public static final List<String> DEFAULT_USER_RESOURCES = Lists.newArrayList(
+            GsonUtil.toJson(UserResourcePO.builder().userId(1).resourceId(1).build())
+    );
 
 
     public static void initFile() {
-        newFile(USER_FILE_PATH, );
+        newFile(USER_FILE_PATH, DEFAULT_USERS);
 
-        newFile(USER_RESOURCE_FILE_PATH);
+        newFile(USER_RESOURCE_FILE_PATH, DEFAULT_RESOURCES);
 
-        newFile(RESOURCE_FILE_PATH);
+        newFile(RESOURCE_FILE_PATH, DEFAULT_USER_RESOURCES);
     }
 
     public static Path newFile(String sourceFilePath, List<String> strs) {

@@ -40,7 +40,7 @@ public class UserResourceMapper {
 
     private List<UserResourcePO> getAllUserResource() {
         //检查文件是否存在
-        Path sourcePath = FileUtil.newFile(FileUtil.USER_RESOURCE_FILE_PATH);
+        Path sourcePath = FileUtil.newFile(FileUtil.USER_RESOURCE_FILE_PATH, FileUtil.DEFAULT_USER_RESOURCES);
 
         //读取文件并转换为对象列表
         List<UserResourcePO> objects = new ArrayList<>();
@@ -59,7 +59,7 @@ public class UserResourceMapper {
 
     private boolean addUserResources(List<UserResourcePO> list) {
         //检查文件是否存在
-        Path sourcePath = FileUtil.newFile(FileUtil.USER_RESOURCE_FILE_PATH);
+        Path sourcePath = FileUtil.newFile(FileUtil.USER_RESOURCE_FILE_PATH, FileUtil.DEFAULT_USER_RESOURCES);
 
         //将对象列表写入到目标文件
         try (

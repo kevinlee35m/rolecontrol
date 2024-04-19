@@ -36,7 +36,7 @@ public class ResourceMapper {
 
     private List<ResourcePO> getAllResource() {
         //检查文件是否存在
-        Path sourcePath = FileUtil.newFile(FileUtil.RESOURCE_FILE_PATH);
+        Path sourcePath = FileUtil.newFile(FileUtil.RESOURCE_FILE_PATH, FileUtil.DEFAULT_RESOURCES);
 
         //读取文件并转换为对象列表
         List<ResourcePO> objects = new ArrayList<>();
@@ -55,7 +55,7 @@ public class ResourceMapper {
 
     private boolean addResources(List<ResourcePO> list) {
         //检查文件是否存在
-        Path sourcePath = FileUtil.newFile(FileUtil.RESOURCE_FILE_PATH);
+        Path sourcePath = FileUtil.newFile(FileUtil.RESOURCE_FILE_PATH, FileUtil.DEFAULT_RESOURCES);
 
         //将对象列表写入到目标文件
         try {

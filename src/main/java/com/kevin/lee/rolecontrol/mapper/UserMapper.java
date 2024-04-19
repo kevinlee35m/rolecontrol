@@ -37,7 +37,7 @@ public class UserMapper {
 
     private List<UserPO> getAllUser() {
         //检查文件是否存在
-        Path sourcePath = FileUtil.newFile(FileUtil.USER_FILE_PATH);
+        Path sourcePath = FileUtil.newFile(FileUtil.USER_FILE_PATH, FileUtil.DEFAULT_USERS);
 
         // 读取文件并转换为对象列表
         List<UserPO> objects = new ArrayList<>();
@@ -56,7 +56,7 @@ public class UserMapper {
 
     private boolean addUsers(List<UserPO> list) {
         //检查文件是否存在
-        Path sourcePath = FileUtil.newFile(FileUtil.USER_FILE_PATH);
+        Path sourcePath = FileUtil.newFile(FileUtil.USER_FILE_PATH, FileUtil.DEFAULT_USERS);
 
         // 将对象列表写入到目标文件
         try (

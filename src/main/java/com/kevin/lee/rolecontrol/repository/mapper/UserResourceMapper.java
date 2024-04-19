@@ -1,4 +1,4 @@
-package com.kevin.lee.rolecontrol.mapper;
+package com.kevin.lee.rolecontrol.repository.mapper;
 
 import com.kevin.lee.rolecontrol.repository.po.UserResourcePO;
 import com.kevin.lee.rolecontrol.util.FileUtil;
@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -58,12 +59,11 @@ public class UserResourceMapper {
 
 
     private boolean addUserResources(List<UserResourcePO> list) {
-        //检查文件是否存在
-        Path sourcePath = FileUtil.newFile(FileUtil.USER_RESOURCE_FILE_PATH, FileUtil.DEFAULT_USER_RESOURCES);
+        //确保文件存在
+        FileUtil.newFile(FileUtil.USER_RESOURCE_FILE_PATH, FileUtil.DEFAULT_USER_RESOURCES);
 
         //将对象列表写入到目标文件
-        try (
-                BufferedWriter writer = Files.newBufferedWriter(sourcePath)) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(FileUtil.USER_RESOURCE_FILE_PATH, true))) {
             for (UserResourcePO obj : list) {
                 writer.write(GsonUtil.toJson(obj));
                 writer.newLine();

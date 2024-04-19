@@ -1,8 +1,8 @@
 package com.kevin.lee.rolecontrol.validator;
 
-import com.kevin.lee.rolecontrol.RoleEnum;
-import com.kevin.lee.rolecontrol.mapper.ResourceMapper;
-import com.kevin.lee.rolecontrol.mapper.UserMapper;
+import com.kevin.lee.rolecontrol.enums.RoleEnum;
+import com.kevin.lee.rolecontrol.repository.mapper.ResourceMapper;
+import com.kevin.lee.rolecontrol.repository.mapper.UserMapper;
 import com.kevin.lee.rolecontrol.repository.po.ResourcePO;
 import com.kevin.lee.rolecontrol.repository.po.UserPO;
 import com.kevin.lee.rolecontrol.vo.UserAddVO;
@@ -60,7 +60,7 @@ public class RoleControlValidator {
         }
 
         ResourcePO resourcePO = resourceMapper.getResource(resourceId);
-        return resourcePO != null ? "" : "resourceDesc is not exist";
+        return resourcePO != null ? "" : "resource is not exist";
     }
 
 }

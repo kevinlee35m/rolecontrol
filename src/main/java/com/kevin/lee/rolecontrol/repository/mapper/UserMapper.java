@@ -1,4 +1,4 @@
-package com.kevin.lee.rolecontrol.mapper;
+package com.kevin.lee.rolecontrol.repository.mapper;
 
 import com.kevin.lee.rolecontrol.repository.po.UserPO;
 import com.kevin.lee.rolecontrol.util.FileUtil;

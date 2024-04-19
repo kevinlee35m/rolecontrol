@@ -16,5 +16,5 @@ public class UserVO implements Serializable {
 
     private String accountName;
 
-    private String role;
+    private Integer role;
 }

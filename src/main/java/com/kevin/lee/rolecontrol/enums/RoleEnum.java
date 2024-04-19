@@ -1,4 +1,4 @@
-package com.kevin.lee.rolecontrol;
+package com.kevin.lee.rolecontrol.enums;
 
 /**
  * @author kevinlee_m

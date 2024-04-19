@@ -1,7 +1,7 @@
 package com.kevin.lee.rolecontrol.util;
 
 import com.google.common.collect.Lists;
-import com.kevin.lee.rolecontrol.RoleEnum;
+import com.kevin.lee.rolecontrol.enums.RoleEnum;
 import com.kevin.lee.rolecontrol.repository.po.ResourcePO;
 import com.kevin.lee.rolecontrol.repository.po.UserPO;
 import com.kevin.lee.rolecontrol.repository.po.UserResourcePO;

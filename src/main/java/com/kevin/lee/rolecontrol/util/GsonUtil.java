@@ -11,7 +11,6 @@
 package com.kevin.lee.rolecontrol.util;
 
 import com.google.gson.*;
-import com.kevin.lee.rolecontrol.vo.UserVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
@@ -70,14 +69,5 @@ public class GsonUtil {
         public JsonElement serialize(Date date, Type type, JsonSerializationContext jsonSerializationContext) {
             return new JsonPrimitive(date.getTime());
         }
-    }
-
-    public static void main(String[] args) {
-        UserVO userVO = new UserVO();
-        userVO.setUserId(1L);
-        userVO.setRole("Lee");
-        userVO.setAccountName("ha");
-
-        System.out.println(GsonUtil.toJson(userVO));
     }
 }

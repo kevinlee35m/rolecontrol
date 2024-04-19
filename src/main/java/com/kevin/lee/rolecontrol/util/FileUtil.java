@@ -33,7 +33,7 @@ public class FileUtil {
     //用户表初始化数据
     public static final List<String> DEFAULT_USERS = Lists.newArrayList(
             GsonUtil.toJson(UserPO.builder().userId(1).userName("lee").role(RoleEnum.ADMIN.role).build()),
-            GsonUtil.toJson(UserPO.builder().userId(2).userName("lee2").role(RoleEnum.USER.role).build()));
+            GsonUtil.toJson(UserPO.builder().userId(2).userName("lee2").role(RoleEnum.COMMON.role).build()));
 
     //资源表初始化数据
     public static final List<String> DEFAULT_RESOURCES = Lists.newArrayList(
